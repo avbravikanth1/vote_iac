@@ -56,7 +56,7 @@ pipeline {
                 echo "Validating Deployment..."
                 kubectl get pods,deployment,svc,ing || exit 1
                 echo "Cleaning up resources..."
-                kubectl delete deployment,svc,ing --all || exit 1
+                kubectl get deployment,svc,ing --all || exit 1
                 '''
             }
         }
