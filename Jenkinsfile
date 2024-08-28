@@ -1,36 +1,48 @@
-pipeline {
+// pipeline {
    agent any
    environment {
-      PROJECT = 'WELCOME TO  eks-cluster-01 BATCH - Jenkins Class'
+      PROJECT = 'WELCOME TO eks-cluster-01 BATCH - Jenkins Class'
+      AWS_REGION = 'us-east-2'
+      CLUSTER_NAME = 'eks-cluster-01'
    }
    stages {
       stage('Check The Kubernetes Access') {
          steps {
-            sh 'aws eks --region us-east-2 update-kubeconfig --name eks-cluster-01'
-            sh 'kubectl get pods -A'
-            sh 'kubectl get ns'
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', 
+                              credentialsId: 'aws-credentials-id']]) {
+                sh '''
+                aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
+                kubectl get pods -A || exit 1
+                kubectl get ns || exit 1
+                '''
+            }
          }
       }
       stage('Deploy Voting App') {
          steps {
-            sh 'ls -al'
-            sh 'kubectl apply -f voting-with-ingress.yml'
-            sh 'kubectl apply -f ingress.yml'
-            sh 'kubectl apply -f ingress-nk.yml'
-            sh 'kubectl get pods,svc,ingress'
+            sh '''
+            ls -al
+            kubectl apply -f voting-with-ingress.yml || exit 1
+            kubectl apply -f ingress.yml || exit 1
+            kubectl apply -f ingress-nk.yml || exit 1
+            kubectl get pods,svc,ingress || exit 1
+            '''
          }
       }
       stage('Deploy Ingress for Vote & Result') {
          steps {
-            sh 'kubectl apply -f ingress.yml'
-            sh 'kubectl get ingress'
+            sh '''
+            kubectl apply -f ingress.yml || exit 1
+            kubectl get ingress || exit 1
+            '''
          }
       }
       stage('Validating Deployment') {
          steps {
-            sh 'kubectl get pods,deployment,svc,ing'
-            sh 'kubectl delete deployment,svc,ing --all'
+            sh '''
+            kubectl get pods,deployment,svc,ing || exit 1
+            kubectl delete deployment,svc,ing --all || exit 1
+            '''
          }
       }
    }
-}
