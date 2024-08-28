@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: default
+  name: votingapp-ingress
+  annotations:
+    #kubernetes.io/ingress.class: alb - Deprecated
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+    #Make sure our SSL Cert and Cluster is in same AWS Account.
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:us-east-2:009412611595:certificate/5c295a02-7c3e-422e-a29e-5aa0a1657da6'
+spec:
+  ingressClassName: alb
+  tls:
+  - hosts:
+    - "vote.ravitest.xyz"
+    - "result.ravitest.xyz"
+    - "www.ravitest.xyz"
+    secretName: my-tls-secret
+  rules:
+  - host: vote.ravitest.xyz
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: vote
+              port:
+                number: 80
+  - host: result.ravitest.xyz
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: result
+              port:
+                number: 80
+  - host: www.ravitest.xyz
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: vote
+              port:
+                number: 80
