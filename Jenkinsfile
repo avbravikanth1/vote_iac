@@ -1,4 +1,4 @@
-// pipeline {
+pipeline {
    agent any
    environment {
       PROJECT = 'WELCOME TO eks-cluster-01 BATCH - Jenkins Class'
@@ -46,3 +46,4 @@
          }
       }
    }
+}
