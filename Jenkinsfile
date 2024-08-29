@@ -6,7 +6,7 @@ pipeline {
    stages {
       stage('Check The Kubernetes Access') {
          steps {
-            sh 'aws eks --region us-east-2 update-kubeconfig --name eks-cluster-01'
+            sh 'aws eks --region us-east-2 update-kubeconfig --name eks-cluster-02'
             sh 'kubectl get pods -A'
             sh 'kubectl get ns'
          }

@@ -39,7 +39,7 @@ spec:
               - key: alpha.eksctl.io/nodegroup-name
                 operator: In
                 values:
-                - nodegroup1 
+                - nodegroup2 
       containers:
       - name: redis
         image: redis:alpine
@@ -88,7 +88,7 @@ spec:
               - key: alpha.eksctl.io/nodegroup-name
                 operator: In
                 values:
-                - nodegroup1
+                - nodegroup2
       containers:
       - name: db
         image: postgres:9.4
@@ -180,7 +180,7 @@ spec:
               - key: alpha.eksctl.io/nodegroup-name
                 operator: In
                 values:
-                - nodegroup1
+                - nodegroup2
       containers:
       - name: result
         image: sreeharshav/example-voting-app_result:latest
@@ -249,7 +249,7 @@ spec:
               - key: alpha.eksctl.io/nodegroup-name
                 operator: In
                 values:
-                - nodegroup1
+                - nodegroup2
       containers:
       - name: vote
         image: sreeharshav/example-voting-app_vote:latest
@@ -294,7 +294,7 @@ spec:
               - key: alpha.eksctl.io/nodegroup-name
                 operator: In
                 values:
-                - nodegroup1 
+                - nodegroup2 
       containers: 
       - image: sreeharshav/example-voting-app_worker:latest
         name: worker
