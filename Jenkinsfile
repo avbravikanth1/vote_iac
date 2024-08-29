@@ -14,9 +14,9 @@ pipeline {
       stage('Deploy Voting App') {
          steps {
             sh 'ls -al'
-            sh 'kubectl apply -f voting-with-ingress.yml'
+            // sh 'kubectl apply -f voting-with-ingress.yml'
             sh 'kubectl apply -f ingress.yml'
-            sh 'kubectl apply -f ingress-nk.yml'
+            // sh 'kubectl apply -f ingress-nk.yml'
             sh 'kubectl get pods,svc,ingress'
          }
       }
